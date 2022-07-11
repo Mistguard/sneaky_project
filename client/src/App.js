@@ -8,8 +8,9 @@ import socketIOClient from "socket.io-client";
 import StartingForm from "./components/StartingForm";
 import { useEffect } from "react";
 
-const ENDPOINT = "http://127.0.0.1:3030";
-const socket = socketIOClient.connect(ENDPOINT)
+const ENDPOINT = process.env.ENDPOINT | "http://127.0.0.1:3000";
+
+const socket = socketIOClient.connect(ENDPOINT);
 
 function App() {
   const [score, setScore] = useState(0);
@@ -28,20 +29,20 @@ function App() {
       setRoomName(roomName);
       hideStartView();
       displayPartyView();
-    })
-  }, [])
+    });
+  }, []);
 
   const hideStartView = () => {
     let startView = document.getElementsByClassName("start-view")[0];
-    startView.style.visibility = "collapse"
+    startView.style.visibility = "collapse";
     startView.style.display = "none";
-  }
+  };
 
   const displayPartyView = () => {
     let partyView = document.getElementsByClassName("party-view")[0];
     partyView.style.visibility = "visible";
     partyView.style.display = "block";
-  }
+  };
 
   const updateArenaLength = (length) => {
     if (!isPlaying) {
@@ -52,10 +53,10 @@ function App() {
   return (
     <div className="container">
       <div className="start-view">
-        <StartingForm socket={socket}/>
+        <StartingForm socket={socket} />
       </div>
       <div className="party-view">
-        <Header userCount={userCount} roomName={roomName}/>
+        <Header userCount={userCount} roomName={roomName} />
         <Scores actualScore={score} bestScore={bestScore} />
         <SlideBar
           gameOn={isPlaying}
